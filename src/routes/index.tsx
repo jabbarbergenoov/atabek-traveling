@@ -173,9 +173,7 @@ const excursions: Excursion[] = [
 ]
 
 const companyStats = [
-  { value: '15+', labelUz: 'Yillik tajriba', labelKaa: 'Jıllıq tájiriybe', icon: Star },
-  { value: '5000+', labelUz: 'Mamnun mijozlar', labelKaa: 'Qanaatlanǵan mijozlar', icon: Users },
-  { value: '20+', labelUz: 'Ekskursiya turlari', labelKaa: 'Ekskursiya túrleri', icon: Compass },
+  { value: '5ta', labelUz: 'Ekskursiya turlari', labelKaa: 'Ekskursiya túrleri', icon: Compass },
   { value: '100%', labelUz: 'Sifat kafolati', labelKaa: 'Sap kafiyatı', icon: Shield },
 ]
 
@@ -184,25 +182,17 @@ const advantages = [
     icon: Car,
     titleUz: 'Qulay transport',
     titleKaa: 'Qolay transport',
-    descUz: 'Zamonaviy mikroavtobuslar, konditsioner va qulay o‘rindiqlar',
-    descKaa: 'Zamanagóy mikroavtobuslar, konditsioner hám qolay orınlıqlar',
+    descUz: 'Zamonaviy mikroavtobuslar, qulay o‘rindiqlar',
+    descKaa: 'Zamanagóy mikroavtobuslar,  qolay orınlıqlar',
     gradient: 'from-violet-500 to-fuchsia-500'
   },
   {
     icon: Languages,
     titleUz: 'Tajribali gidlar',
     titleKaa: 'Tájiriybeli gidler',
-    descUz: '10 yillik tajribaga ega professional gidlar. 3 tilda bepul ekskursiya',
-    descKaa: '10 jıllıq tájiriybeye iye professional gidler. 3 tilda biypul ekskursiya',
+    descUz: 'professional gidlar. 2 tilda bepul ekskursiya',
+    descKaa: 'professional gidler. 2 tilda biypul ekskursiya',
     gradient: 'from-fuchsia-500 to-pink-500'
-  },
-  {
-    icon: Coffee,
-    titleUz: 'Milliy taomlar',
-    titleKaa: 'Milliy taomlar',
-    descUz: 'Ekskursiya davomida milliy taomlardan tushlik. Vegetarian menyu mavjud',
-    descKaa: 'Ekskursiya dawamında milliy taomlardan túsli. Vegetarian menyu bar',
-    gradient: 'from-pink-500 to-rose-500'
   },
   {
     icon: Camera,
@@ -212,22 +202,6 @@ const advantages = [
     descKaa: 'Professional fotograf xızmeti. Barlıq súwretler biypul',
     gradient: 'from-rose-500 to-orange-500'
   },
-  {
-    icon: Shield,
-    titleUz: 'Sug‘urta',
-    titleKaa: 'Sıǵırta',
-    descUz: 'Har bir sayyoh ekskursiya davomida sug‘urta qilinadi',
-    descKaa: 'Hár bir sayaxatshı ekskursiya dawamında sıǵırta qılınadı',
-    gradient: 'from-orange-500 to-amber-500'
-  },
-  {
-    icon: Star,
-    titleUz: 'Bonuslar',
-    titleKaa: 'Bonuslar',
-    descUz: 'Doimiy mijozlarga chegirmalar va bonuslar. Guruh bilan kelganlarga maxsus takliflar',
-    descKaa: 'Dawamlı mijozlarǵa shegirmeler hám bonuslar. Top penen kelgenlerge arnawlı usınıslar',
-    gradient: 'from-amber-500 to-yellow-500'
-  }
 ]
 
 const translations = {
@@ -342,8 +316,8 @@ const translations = {
       copyright: 'Barlıq huqıqlar qorǵalǵan.'
     },
     modal: {
-      program: 'Dásturǵa kirgizilgen',
-      included: 'Narxqa kirgizilgen',
+      program: 'Dásturпу kirgizilgen',
+      included: 'Nar kirgizilgen',
       duration: 'Dawamlılıǵı',
       price: 'Narıq',
       book: 'Bron qılıw'
