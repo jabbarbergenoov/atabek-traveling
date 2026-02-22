@@ -321,7 +321,7 @@ const translations = {
       duration: 'Dawamlılıǵı',
       price: 'Narıq',
       book: 'Bron qılıw'
-    }
+    } 
   }
 }
 
