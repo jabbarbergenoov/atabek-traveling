@@ -1,11 +1,10 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute,  Link,  useNavigate } from '@tanstack/react-router'
 import { useMemo, useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   CalendarCheck2,
   CircleDollarSign,
   Globe,
-  Headset,
   Landmark,
   MapPinned,
   MessagesSquare,
@@ -19,10 +18,8 @@ import {
   Clock,
   Shield,
   Camera,
-  Coffee,
   Car,
   Languages,
-  Mail,
   MapPin,
   Send,
   X,
@@ -172,6 +169,7 @@ const excursions: Excursion[] = [
   }
 ]
 
+
 const companyStats = [
   { value: '5ta', labelUz: 'Ekskursiya turlari', labelKaa: 'Ekskursiya túrleri', icon: Compass },
   { value: '100%', labelUz: 'Sifat kafolati', labelKaa: 'Sap kafiyatı', icon: Shield },
@@ -183,7 +181,7 @@ const advantages = [
     titleUz: 'Qulay transport',
     titleKaa: 'Qolay transport',
     descUz: 'Zamonaviy mikroavtobuslar, qulay o‘rindiqlar',
-    descKaa: 'Zamanagóy mikroavtobuslar,  qolay orınlıqlar',
+    descKaa: 'Zamanagóy mikroavtobuslar, qolay orınlıqlar',
     gradient: 'from-violet-500 to-fuchsia-500'
   },
   {
@@ -316,8 +314,8 @@ const translations = {
       copyright: 'Barlıq huqıqlar qorǵalǵan.'
     },
     modal: {
-      program: 'Dásturпу kirgizilgen',
-      included: 'Nar kirgizilgen',
+      program: 'Dásturge kirgizilgen',
+      included: 'Narxqa kirgizilgen',
       duration: 'Dawamlılıǵı',
       price: 'Narıq',
       book: 'Bron qılıw'
@@ -337,8 +335,24 @@ function App() {
     excursions.reduce((acc, ex) => ({ ...acc, [ex.id]: 0 }), {} as Record<ExcursionKey, number>)
   )
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
+  const [isLoading, setIsLoading] = useState(true)
+  const [isAuthorized, setIsAuthorized] = useState(false)
 
   const t = translations[lang]
+  const navigate = useNavigate()
+
+  // Все хуки useMemo должны быть до условного рендеринга
+  const selectedData = useMemo(
+    () => excursions.find(e => e.id === selectedExcursion),
+    [selectedExcursion]
+  )
+
+  const filteredExcursions = useMemo(() => {
+    if (activeFilter === 'all') return excursions
+    if (activeFilter === 'historical') return excursions.filter(ex => ex.id === 'khiva' || ex.id === 'mazlumxon')
+    if (activeFilter === 'nature') return excursions.filter(ex => ex.id === 'moynaq' || ex.id === 'sultonUvays' || ex.id === 'dauitOta')
+    return excursions
+  }, [activeFilter])
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -351,6 +365,22 @@ function App() {
     return () => window.removeEventListener('mousemove', handleMouseMove)
   }, [])
 
+  // Проверка авторизации только на клиенте
+  useEffect(() => {
+    // Проверяем, что мы на клиенте
+    if (typeof window !== 'undefined') {
+      const accessToken = localStorage.getItem('accessToken')
+      const refreshToken = localStorage.getItem('refreshToken')
+
+      if (!accessToken || !refreshToken) {
+        navigate({ to: '/login' })
+      } else {
+        setIsAuthorized(true)
+        setIsLoading(false)
+      }
+    }
+  }, [navigate])
+
   useEffect(() => {
     if (!selectedExcursion) return
     const interval = setInterval(() => {
@@ -362,17 +392,22 @@ function App() {
     return () => clearInterval(interval)
   }, [selectedExcursion])
 
-  const selectedData = useMemo(
-    () => excursions.find(e => e.id === selectedExcursion),
-    [selectedExcursion]
-  )
+  // Показываем загрузку пока проверяем авторизацию
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-violet-50 to-fuchsia-50">
+        <div className="text-center">
+          <div className="w-20 h-20 border-4 border-violet-200 border-t-violet-600 rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-slate-600">Yuklanmoqda...</p>
+        </div>
+      </div>
+    )
+  }
 
-  const filteredExcursions = useMemo(() => {
-    if (activeFilter === 'all') return excursions
-    if (activeFilter === 'historical') return excursions.filter(ex => ex.id === 'khiva' || ex.id === 'mazlumxon')
-    if (activeFilter === 'nature') return excursions.filter(ex => ex.id === 'moynaq' || ex.id === 'sultonUvays' || ex.id === 'dauitOta')
-    return excursions
-  }, [activeFilter])
+  // Если не авторизован, не рендерим основной контент
+  if (!isAuthorized) {
+    return null
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-50">
@@ -1041,7 +1076,7 @@ function App() {
                     className={`flex-1 py-4 bg-gradient-to-r ${selectedData.gradient} text-white rounded-xl font-semibold text-lg shadow-lg flex items-center justify-center gap-2`}
                   >
                     <CalendarCheck2 size={20} />
-                    {t.modal.book}
+                    <Link to='/bookings'>{t.modal.book}</Link>
                   </motion.button>
                   <motion.button
                     whileHover={{ scale: 1.02 }}
