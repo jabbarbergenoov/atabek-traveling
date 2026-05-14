@@ -90,7 +90,7 @@ function RouteComponent() {
       }
 
       // Make API call
-      const response = await axios.post('https://d87a-188-113-244-29.ngrok-free.app/auth/sign-up', signUpData)
+      const response = await axios.post('https://atabektravel.techsoftx.uz/api/auth/sign-up', signUpData)
       
       // Handle successful registration
       if (response.status === 200 || response.status === 201) {
@@ -289,17 +289,17 @@ function RouteComponent() {
                 {/* Email */}
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2">
-                    Email
+                    Login
                   </label>
                   <div className="relative">
-                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                    <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                     <input
-                      type="email"
+                      type="text"
                       name="email"
                       value={formData.email}
                       onChange={handleChange}
                       className="w-full pl-9 pr-3 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-violet-500/50 focus:border-violet-500 transition text-sm"
-                      placeholder="your@email.com"
+                      placeholder="Login"
                       required
                     />
                   </div>

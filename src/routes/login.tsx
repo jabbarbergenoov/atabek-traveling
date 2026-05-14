@@ -37,7 +37,7 @@ function RouteComponent() {
     setIsLoading(true)
 
     try {
-      const response = await axios.post("https://d87a-188-113-244-29.ngrok-free.app/auth/login", {
+      const response = await axios.post("https://atabektravel.techsoftx.uz/api/auth/login", {
         login: login,
         password: password,
       })
@@ -290,9 +290,7 @@ function RouteComponent() {
                     />
                     <span className="text-sm text-slate-600">Eslab qolish</span>
                   </label>
-                  <a href="#" className="text-sm text-violet-600 hover:text-violet-700 transition">
-                    Parolni unutdingizmi?
-                  </a>
+                
                 </div>
 
                 {/* Ошибка */}
@@ -327,18 +325,7 @@ function RouteComponent() {
                   )}
                 </motion.button>
 
-                {/* Demo ma'lumotlar */}
-                <div className="mt-6 p-4 bg-slate-50 rounded-xl border border-slate-200">
-                  <p className="text-xs text-slate-500 mb-2 flex items-center gap-1">
-                    <Shield size={12} />
-                    Demo ma'lumotlar:
-                  </p>
-                  <div className="text-xs text-slate-600 space-y-1">
-                    <p>Login: <span className="font-mono text-violet-600">admin</span></p>
-                    <p>Parol: <span className="font-mono text-violet-600">admin123</span></p>
-                    <p className="text-slate-400 text-[10px] mt-1">* Haqiqiy serverga ulangan</p>
-                  </div>
-                </div>
+           
               </form>
 
               {/* Регистрация */}
