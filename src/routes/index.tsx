@@ -1,8 +1,7 @@
-import { createFileRoute,  Link,  useNavigate } from '@tanstack/react-router'
+import { createFileRoute, } from '@tanstack/react-router'
 import { useMemo, useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
-  CalendarCheck2,
   CircleDollarSign,
   Globe,
   Landmark,
@@ -27,11 +26,12 @@ import {
   CheckCircle2,
   Handshake,
 } from 'lucide-react'
+import BookingForm from '@/BookingForm'
 
-type Lang = 'uz' | 'kaa'
+export type Lang = 'uz' | 'kaa'
 type ExcursionKey = 'khiva' | 'moynaq' | 'mazlumxon' | 'sultonUvays' | 'dauitOta'
 
-type Excursion = {
+export type Excursion = {
   id: ExcursionKey
   title: string
   shortTitle: string
@@ -62,12 +62,12 @@ const excursions: Excursion[] = [
       'Kulolchilik ustaxonasi'
     ],
     included: ['Transport', 'Gid xizmati', 'Suv', 'Tushlik'],
-   images: [
-  'https://images.openai.com/static-rsc-3/mb4HfX-VSUwU7H1kqEGffbGPL3Rhx6BnKj1qw1nxv9AEaitcoCy-kNIAthsGFmOp3uhIg_bRKXhE7KmD3DFP-u86c1EZHEGcPmYW5t3O41M?purpose=fullsize&v=1?w=800',
-  'https://images.openai.com/static-rsc-3/MB38ARfjrF7WWYl8uq4PaiOdwQl2KOvEbcCMNZz7i2n6X2l_pqrUfhSKjzClm6XfTbxRVEcfuHAhlCzcGUNxYHGu8aMndRyo8QRoPsGBc4o?purpose=fullsize&v=1?w=800',
-  'https://images.openai.com/static-rsc-3/3PJiSQWQm4Fz1640hHdrI6VETO_2-yR011K1ppQ6f-64fP097rXOiWK_whKQu2iyUEwmCowxJI3lHw-TqwwFBo1yjtU2Ki46_PrQXDW1Rw0?purpose=fullsize&v=1?w=800'
-]
-,
+    images: [
+      'https://images.openai.com/static-rsc-3/mb4HfX-VSUwU7H1kqEGffbGPL3Rhx6BnKj1qw1nxv9AEaitcoCy-kNIAthsGFmOp3uhIg_bRKXhE7KmD3DFP-u86c1EZHEGcPmYW5t3O41M?purpose=fullsize&v=1?w=800',
+      'https://images.openai.com/static-rsc-3/MB38ARfjrF7WWYl8uq4PaiOdwQl2KOvEbcCMNZz7i2n6X2l_pqrUfhSKjzClm6XfTbxRVEcfuHAhlCzcGUNxYHGu8aMndRyo8QRoPsGBc4o?purpose=fullsize&v=1?w=800',
+      'https://images.openai.com/static-rsc-3/3PJiSQWQm4Fz1640hHdrI6VETO_2-yR011K1ppQ6f-64fP097rXOiWK_whKQu2iyUEwmCowxJI3lHw-TqwwFBo1yjtU2Ki46_PrQXDW1Rw0?purpose=fullsize&v=1?w=800'
+    ]
+    ,
     icon: Landmark,
     gradient: 'from-violet-500 to-fuchsia-500'
   },
@@ -86,12 +86,12 @@ const excursions: Excursion[] = [
       'Mahalliy baliq taomlari'
     ],
     included: ['Transport', 'Gid', 'Tushlik', 'Suv'],
-  images: [
-  'https://images.openai.com/static-rsc-3/RU6i2kBHr5WmaMGQyfcEIC8zPZ6KebTPdoW4we9qO13p2tODZKVFUqzNPIT6VUOPokKzaFK1MbCAauBpxQzg88c8DGVDOT6CMhYZUtwRR04?purpose=fullsize&v=1?w=800',
-  'https://images.openai.com/static-rsc-3/LNFIjDQdN2MtHytlxDOxOFOjVKR5B6-0eHXfMKXu6KOT0UQ7wDHYl9ei9ORG1pJMaRnMM-rhET-GqiLjrjVM6mmSdW3uVF2yLGIK1SXn4EE?purpose=fullsize&v=1?w=800',
-  'https://images.openai.com/static-rsc-3/48GtZX8R8qxVW9HuAqnH6DyqrJShAaj56TsNy519yVyfdjLCoQhdBTtZyDBVqSRTpO6yMFN3p6OOCQUnlFbYIWGXk1iIEnFiYBpFbm0Y3tc?purpose=fullsize&v=1?w=800'
-]
-,
+    images: [
+      'https://images.openai.com/static-rsc-3/RU6i2kBHr5WmaMGQyfcEIC8zPZ6KebTPdoW4we9qO13p2tODZKVFUqzNPIT6VUOPokKzaFK1MbCAauBpxQzg88c8DGVDOT6CMhYZUtwRR04?purpose=fullsize&v=1?w=800',
+      'https://images.openai.com/static-rsc-3/LNFIjDQdN2MtHytlxDOxOFOjVKR5B6-0eHXfMKXu6KOT0UQ7wDHYl9ei9ORG1pJMaRnMM-rhET-GqiLjrjVM6mmSdW3uVF2yLGIK1SXn4EE?purpose=fullsize&v=1?w=800',
+      'https://images.openai.com/static-rsc-3/48GtZX8R8qxVW9HuAqnH6DyqrJShAaj56TsNy519yVyfdjLCoQhdBTtZyDBVqSRTpO6yMFN3p6OOCQUnlFbYIWGXk1iIEnFiYBpFbm0Y3tc?purpose=fullsize&v=1?w=800'
+    ]
+    ,
     icon: Ship,
     gradient: 'from-blue-500 to-cyan-500'
   },
@@ -111,11 +111,11 @@ const excursions: Excursion[] = [
     ],
     included: ['Transport', 'Gid', 'Suv'],
     images: [
-  'https://images.openai.com/static-rsc-3/7oEugTPwI9zVmgzCq64fae8h2WVR9z-2wmEw7a8ynBBUFmOEDm4qdG1QtnCVY5o0GeoT_rOemsdWeT6neeuAwp_tX082AEa1L0gQvvClHPA?purpose=fullsize&v=1?w=800',
-  'https://uzreport.news/fotobank/content/eg4ok7fprzysBmp5gS27imIy2WqzycDb2O0P29fd.jpeg?w=800',
-  'https://uzreport.news/fotobank/content/fOz0rXGDLlc2jZrBz0kf8VV1yfinjzJ9d5zrOz0q.jpeg?w=800'
-]
-,
+      'https://images.openai.com/static-rsc-3/7oEugTPwI9zVmgzCq64fae8h2WVR9z-2wmEw7a8ynBBUFmOEDm4qdG1QtnCVY5o0GeoT_rOemsdWeT6neeuAwp_tX082AEa1L0gQvvClHPA?purpose=fullsize&v=1?w=800',
+      'https://uzreport.news/fotobank/content/eg4ok7fprzysBmp5gS27imIy2WqzycDb2O0P29fd.jpeg?w=800',
+      'https://uzreport.news/fotobank/content/fOz0rXGDLlc2jZrBz0kf8VV1yfinjzJ9d5zrOz0q.jpeg?w=800'
+    ]
+    ,
     icon: TentTree,
     gradient: 'from-emerald-500 to-teal-500'
   },
@@ -134,12 +134,12 @@ const excursions: Excursion[] = [
       'Piknik'
     ],
     included: ['Transport', 'Gid', 'Suv', 'Tushlik'],
-   images: [
-  'https://images.openai.com/static-rsc-1/Nhsf1euw0m7wALm7uOTA3a6asjjsW2GRH7N2JL5lIUuzHqlJZcQfycGxqx5HvmPC4140ku9UKIlWoPWi3KYKcEGZ9-0I1WJH_7FH73tquS87-I3Wr7_lAFAOEUzdYAUQBYG5jMwSau7qtv0UDlrcfg?w=800',
-  'https://images.openai.com/static-rsc-3/DwHt6TDxfmuAE8bq40UZOCz4FubfU_gsoJSF64BjBA4E9RDPpYrIqKkuQFOjf9qBHLy4QDYyw0OGGG8DmtepeVXTZTtvSRphZf5M939DtPE?purpose=fullsize&v=1?w=800',
-  'https://images.openai.com/static-rsc-3/0DF01w2iC-JDIBK38BftGBF2V-qp6U0wnfXvszT8fOeEniX4s0LBF0oL94NVnkWeJPih0KR7mCzaj7rEwxWrMbIWb3f4MAnuE3_ckg-CA0w?purpose=fullsize&v=1?w=800'
-]
-,
+    images: [
+      'https://images.openai.com/static-rsc-1/Nhsf1euw0m7wALm7uOTA3a6asjjsW2GRH7N2JL5lIUuzHqlJZcQfycGxqx5HvmPC4140ku9UKIlWoPWi3KYKcEGZ9-0I1WJH_7FH73tquS87-I3Wr7_lAFAOEUzdYAUQBYG5jMwSau7qtv0UDlrcfg?w=800',
+      'https://images.openai.com/static-rsc-3/DwHt6TDxfmuAE8bq40UZOCz4FubfU_gsoJSF64BjBA4E9RDPpYrIqKkuQFOjf9qBHLy4QDYyw0OGGG8DmtepeVXTZTtvSRphZf5M939DtPE?purpose=fullsize&v=1?w=800',
+      'https://images.openai.com/static-rsc-3/0DF01w2iC-JDIBK38BftGBF2V-qp6U0wnfXvszT8fOeEniX4s0LBF0oL94NVnkWeJPih0KR7mCzaj7rEwxWrMbIWb3f4MAnuE3_ckg-CA0w?purpose=fullsize&v=1?w=800'
+    ]
+    ,
     icon: Mountain,
     gradient: 'from-stone-500 to-zinc-500'
   },
@@ -150,20 +150,17 @@ const excursions: Excursion[] = [
     route: 'Qo‘ng‘irot – Dauit Ota',
     duration: 'Yarim kun',
     price: '180 000 so‘m',
-    description: 'Tinch va osoyishta ziyoratgoh, dam olish uchun ideal maskan. Chashma va qadimiy chiroqlar.',
+    description: 'Tinch va osoyishta ziyoratgoh, ',
     highlights: [
       'Dauit Ota maqbarasi',
-      'Muqaddas chashma',
-      'Dam olish hududi',
-      'Foto va video'
     ],
     included: ['Transport', 'Gid', 'Suv'],
-   images: [
-  'https://www.arianatours.uz/uploads/0000/6/2024/06/01/3.jpg?w=800',
-  'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/08/01/32/d0/caption.jpg?h=-1&s=1&w=1200?w=800',
-  'https://people-travels.com/storage/images/uzbekistan-nature-reserves/kyzylkum-reserve.jpg?w=800'
-]
-,
+    images: [
+      '/image.png',
+      '/image1.png',
+      '/image3.png'
+    ]
+    ,
     icon: Globe,
     gradient: 'from-lime-500 to-green-500'
   }
@@ -319,7 +316,7 @@ const translations = {
       duration: 'Dawamlılıǵı',
       price: 'Narıq',
       book: 'Bron qılıw'
-    } 
+    }
   }
 }
 
@@ -335,13 +332,11 @@ function App() {
     excursions.reduce((acc, ex) => ({ ...acc, [ex.id]: 0 }), {} as Record<ExcursionKey, number>)
   )
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
-  const [isLoading, setIsLoading] = useState(true)
-  const [isAuthorized, setIsAuthorized] = useState(false)
+  const [isLoading] = useState(false)
+  const [isAuthorized] = useState(true)
 
   const t = translations[lang]
-  const navigate = useNavigate()
 
-  // Все хуки useMemo должны быть до условного рендеринга
   const selectedData = useMemo(
     () => excursions.find(e => e.id === selectedExcursion),
     [selectedExcursion]
@@ -365,21 +360,7 @@ function App() {
     return () => window.removeEventListener('mousemove', handleMouseMove)
   }, [])
 
-  // Проверка авторизации только на клиенте
-  useEffect(() => {
-    // Проверяем, что мы на клиенте
-    if (typeof window !== 'undefined') {
-      const accessToken = localStorage.getItem('accessToken')
-      const refreshToken = localStorage.getItem('refreshToken')
 
-      if (!accessToken || !refreshToken) {
-        navigate({ to: '/login' })
-      } else {
-        setIsAuthorized(true)
-        setIsLoading(false)
-      }
-    }
-  }, [navigate])
 
   useEffect(() => {
     if (!selectedExcursion) return
@@ -392,7 +373,6 @@ function App() {
     return () => clearInterval(interval)
   }, [selectedExcursion])
 
-  // Показываем загрузку пока проверяем авторизацию
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-violet-50 to-fuchsia-50">
@@ -404,7 +384,6 @@ function App() {
     )
   }
 
-  // Если не авторизован, не рендерим основной контент
   if (!isAuthorized) {
     return null
   }
@@ -413,7 +392,7 @@ function App() {
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-50">
       {/* Декоративный фон */}
       <div className="fixed inset-0 pointer-events-none">
-        <div 
+        <div
           className="absolute inset-0 bg-gradient-to-br from-violet-100/30 via-fuchsia-100/30 to-cyan-100/30"
           style={{
             transform: `translate(${mousePosition.x * 0.5}px, ${mousePosition.y * 0.5}px)`,
@@ -428,7 +407,7 @@ function App() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
             {/* Логотип */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               className="flex items-center gap-3"
@@ -468,17 +447,15 @@ function App() {
               <div className="flex bg-slate-100 rounded-xl p-1">
                 <button
                   onClick={() => setLang('uz')}
-                  className={`px-3 py-1.5 rounded-lg text-sm font-medium transition ${
-                    lang === 'uz' ? 'bg-white text-violet-600 shadow-sm' : 'text-slate-500'
-                  }`}
+                  className={`px-3 py-1.5 rounded-lg text-sm font-medium transition ${lang === 'uz' ? 'bg-white text-violet-600 shadow-sm' : 'text-slate-500'
+                    }`}
                 >
                   UZ
                 </button>
                 <button
                   onClick={() => setLang('kaa')}
-                  className={`px-3 py-1.5 rounded-lg text-sm font-medium transition ${
-                    lang === 'kaa' ? 'bg-white text-violet-600 shadow-sm' : 'text-slate-500'
-                  }`}
+                  className={`px-3 py-1.5 rounded-lg text-sm font-medium transition ${lang === 'kaa' ? 'bg-white text-violet-600 shadow-sm' : 'text-slate-500'
+                    }`}
                 >
                   ҚАРАҚАЛПАҚ
                 </button>
@@ -502,7 +479,7 @@ function App() {
                 <Compass size={16} />
                 {t.hero.badge}
               </div>
-              
+
               <h2 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
                 <span className="bg-gradient-to-r from-violet-600 via-fuchsia-600 to-violet-600 bg-clip-text text-transparent">
                   {t.hero.title1}
@@ -512,7 +489,7 @@ function App() {
                 <br />
                 <span className="text-slate-800">{t.hero.title3}</span>
               </h2>
-              
+
               <p className="text-lg text-slate-600 mb-8 leading-relaxed">
                 {t.hero.desc}
               </p>
@@ -572,8 +549,8 @@ function App() {
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-4">
                   <div className="relative group overflow-hidden rounded-2xl shadow-xl">
-                    <img 
-                      src={excursions[0].images[0]} 
+                    <img
+                      src={excursions[0].images[0]}
                       alt="Xiva"
                       className="w-full h-48 object-cover group-hover:scale-110 transition duration-500"
                     />
@@ -584,8 +561,8 @@ function App() {
                     </div>
                   </div>
                   <div className="relative group overflow-hidden rounded-2xl shadow-xl">
-                    <img 
-                      src={excursions[1].images[0]} 
+                    <img
+                      src={excursions[1].images[0]}
                       alt="Mo‘ynoq"
                       className="w-full h-56 object-cover group-hover:scale-110 transition duration-500"
                     />
@@ -598,8 +575,8 @@ function App() {
                 </div>
                 <div className="space-y-4 pt-8">
                   <div className="relative group overflow-hidden rounded-2xl shadow-xl">
-                    <img 
-                      src={excursions[3].images[0]} 
+                    <img
+                      src={excursions[3].images[0]}
                       alt="Sulton Uvays"
                       className="w-full h-56 object-cover group-hover:scale-110 transition duration-500"
                     />
@@ -610,8 +587,8 @@ function App() {
                     </div>
                   </div>
                   <div className="relative group overflow-hidden rounded-2xl shadow-xl">
-                    <img 
-                      src={excursions[4].images[0]} 
+                    <img
+                      src={excursions[4].images[0]}
                       alt="Dauit Ota"
                       className="w-full h-48 object-cover group-hover:scale-110 transition duration-500"
                     />
@@ -644,11 +621,10 @@ function App() {
                   onClick={() => setActiveFilter(filter.id)}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className={`px-6 py-3 rounded-xl font-medium transition-all flex items-center gap-2 ${
-                    activeFilter === filter.id
-                      ? 'bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white shadow-lg shadow-violet-200'
-                      : 'bg-white text-slate-600 hover:bg-slate-50 shadow-sm'
-                  }`}
+                  className={`px-6 py-3 rounded-xl font-medium transition-all flex items-center gap-2 ${activeFilter === filter.id
+                    ? 'bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white shadow-lg shadow-violet-200'
+                    : 'bg-white text-slate-600 hover:bg-slate-50 shadow-sm'
+                    }`}
                 >
                   <Icon size={18} />
                   {filter.label}
@@ -695,31 +671,31 @@ function App() {
                     className="bg-white rounded-3xl shadow-xl overflow-hidden cursor-pointer group border border-slate-100"
                   >
                     <div className="relative h-56 overflow-hidden">
-                      <img 
-                        src={excursion.images[0]} 
+                      <img
+                        src={excursion.images[0]}
                         alt={excursion.title}
                         className="w-full h-full object-cover group-hover:scale-110 transition duration-700"
                       />
                       <div className={`absolute inset-0 bg-gradient-to-t ${excursion.gradient} opacity-60 mix-blend-overlay`} />
-                      
+
                       <div className="absolute top-4 right-4">
                         <span className="px-3 py-1 bg-white/90 backdrop-blur-sm rounded-full text-sm font-semibold text-slate-700 shadow-lg flex items-center gap-1">
                           <Clock size={14} />
                           {excursion.duration}
                         </span>
                       </div>
-                      
+
                       <div className="absolute bottom-4 left-4">
                         <div className="w-12 h-12 bg-white/90 backdrop-blur-sm rounded-xl flex items-center justify-center shadow-lg">
                           <Icon className="w-6 h-6 text-violet-600" />
                         </div>
                       </div>
                     </div>
-                    
+
                     <div className="p-6">
                       <h3 className="text-xl font-bold text-slate-800 mb-2">{excursion.title}</h3>
                       <p className="text-slate-600 text-sm mb-4 line-clamp-2">{excursion.description}</p>
-                      
+
                       <div className="space-y-2 mb-4">
                         <div className="flex items-center gap-2 text-sm text-slate-600">
                           <MapPinned size={16} className="text-violet-500" />
@@ -781,16 +757,16 @@ function App() {
                   className="group relative"
                 >
                   <div className={`absolute -inset-0.5 bg-gradient-to-r ${advantage.gradient} rounded-2xl opacity-0 group-hover:opacity-100 blur transition duration-500`} />
-                  
+
                   <div className="relative bg-white rounded-2xl p-8 shadow-xl border border-slate-100 group-hover:border-transparent transition">
                     <div className={`w-16 h-16 bg-gradient-to-r ${advantage.gradient} rounded-xl flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition duration-300`}>
                       <Icon className="w-8 h-8 text-white" />
                     </div>
-                    
+
                     <h3 className="text-2xl font-bold text-slate-800 mb-3 group-hover:text-violet-600 transition">
                       {lang === 'uz' ? advantage.titleUz : advantage.titleKaa}
                     </h3>
-                    
+
                     <p className="text-slate-600 leading-relaxed">
                       {lang === 'uz' ? advantage.descUz : advantage.descKaa}
                     </p>
@@ -813,14 +789,14 @@ function App() {
           >
             <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl" />
             <div className="absolute bottom-0 left-0 w-64 h-64 bg-black/10 rounded-full blur-3xl" />
-            
+
             <div className="relative z-10 grid md:grid-cols-2 gap-12 items-center">
               <div>
                 <h3 className="text-4xl font-bold mb-4">{t.contact.title}</h3>
                 <p className="text-white/80 text-lg mb-8 leading-relaxed">
                   {t.contact.desc}
                 </p>
-                
+
                 <div className="space-y-6">
                   <div className="flex items-center gap-4 group cursor-pointer">
                     <div className="w-14 h-14 bg-white/10 rounded-xl flex items-center justify-center backdrop-blur-sm group-hover:bg-white/20 transition">
@@ -831,7 +807,7 @@ function App() {
                       <p className="text-xl font-semibold">+998 90 660 50 07</p>
                     </div>
                   </div>
-                  
+
                   <div className="flex items-center gap-4 group cursor-pointer">
                     <div className="w-14 h-14 bg-white/10 rounded-xl flex items-center justify-center backdrop-blur-sm group-hover:bg-white/20 transition">
                       <Send size={24} />
@@ -841,7 +817,7 @@ function App() {
                       <p className="text-xl font-semibold">@atabek_nazarov571</p>
                     </div>
                   </div>
-                  
+
                   <div className="flex items-center gap-4 group cursor-pointer">
                     <div className="w-14 h-14 bg-white/10 rounded-xl flex items-center justify-center backdrop-blur-sm group-hover:bg-white/20 transition">
                       <MapPin size={24} />
@@ -853,23 +829,23 @@ function App() {
                   </div>
                 </div>
               </div>
-              
+
               {/* Форма */}
               <div className="bg-white/10 backdrop-blur-md rounded-2xl p-8 border border-white/20">
                 <h4 className="text-2xl font-semibold mb-6">{t.contact.form.title}</h4>
                 <form className="space-y-4">
-                  <input 
-                    type="text" 
-                    placeholder={t.contact.form.name} 
+                  <input
+                    type="text"
+                    placeholder={t.contact.form.name}
                     className="w-full px-4 py-3 bg-white/20 border border-white/30 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white"
                   />
-                  <input 
-                    type="tel" 
-                    placeholder={t.contact.form.phone} 
+                  <input
+                    type="tel"
+                    placeholder={t.contact.form.phone}
                     className="w-full px-4 py-3 bg-white/20 border border-white/30 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white"
                   />
-                  <textarea 
-                    placeholder={t.contact.form.message} 
+                  <textarea
+                    placeholder={t.contact.form.message}
                     rows={3}
                     className="w-full px-4 py-3 bg-white/20 border border-white/30 rounded-xl text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white"
                   />
@@ -903,7 +879,7 @@ function App() {
                 {t.footer.about}
               </p>
             </div>
-            
+
             <div>
               <h5 className="font-semibold mb-4 text-white">{t.footer.tours}</h5>
               <ul className="space-y-3">
@@ -911,7 +887,7 @@ function App() {
                   const Icon = ex.icon
                   return (
                     <li key={ex.id}>
-                      <button 
+                      <button
                         onClick={() => setSelectedExcursion(ex.id)}
                         className="text-slate-400 hover:text-violet-400 transition flex items-center gap-2"
                       >
@@ -923,7 +899,7 @@ function App() {
                 })}
               </ul>
             </div>
-            
+
             <div>
               <h5 className="font-semibold mb-4 text-white">{t.footer.info}</h5>
               <ul className="space-y-3">
@@ -933,7 +909,7 @@ function App() {
                 <li><a href="#" className="text-slate-400 hover:text-violet-400 transition flex items-center gap-2"><MessagesSquare size={16} /> {lang === 'uz' ? 'Blog' : 'Blog'}</a></li>
               </ul>
             </div>
-            
+
             <div>
               <h5 className="font-semibold mb-4 text-white">{t.footer.social}</h5>
               <div className="flex gap-3">
@@ -943,7 +919,7 @@ function App() {
               </div>
             </div>
           </div>
-          
+
           <div className="border-t border-slate-800 mt-12 pt-8 text-center text-slate-500 text-sm">
             © 2024 Atabek Traveling. {t.footer.copyright}
           </div>
@@ -951,146 +927,134 @@ function App() {
       </footer>
 
       {/* Модальное окно с деталями тура */}
-      <AnimatePresence>
-        {selectedExcursion && selectedData && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm"
+   <AnimatePresence>
+  {selectedExcursion && selectedData && (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm"
+      onClick={() => setSelectedExcursion(null)}
+    >
+      <motion.div
+        initial={{ scale: 0.9, y: 50 }}
+        animate={{ scale: 1, y: 0 }}
+        exit={{ scale: 0.9, y: 50 }}
+        onClick={(e) => e.stopPropagation()}
+        className="bg-white rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl"
+      >
+        <div className="relative h-64 md:h-96">
+          <AnimatePresence mode="wait">
+            <motion.img
+              key={currentImageIndex[selectedExcursion]}
+              src={selectedData.images[currentImageIndex[selectedExcursion]]}
+              alt={selectedData.title}
+              className="w-full h-full object-cover"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.5 }}
+            />
+          </AnimatePresence>
+
+          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
+            {selectedData.images.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setCurrentImageIndex(prev => ({ ...prev, [selectedExcursion]: index }))}
+                className={`h-2 rounded-full transition-all ${index === currentImageIndex[selectedExcursion]
+                    ? 'w-8 bg-white'
+                    : 'w-2 bg-white/50 hover:bg-white'
+                  }`}
+              />
+            ))}
+          </div>
+
+          <button
             onClick={() => setSelectedExcursion(null)}
+            className="absolute top-6 right-6 w-12 h-12 bg-black/50 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-black/70 transition"
           >
-            <motion.div
-              initial={{ scale: 0.9, y: 50 }}
-              animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.9, y: 50 }}
-              onClick={(e) => e.stopPropagation()}
-              className="bg-white rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl"
-            >
-              <div className="relative h-96">
-                <AnimatePresence mode="wait">
-                  <motion.img
-                    key={currentImageIndex[selectedExcursion]}
-                    src={selectedData.images[currentImageIndex[selectedExcursion]]}
-                    alt={selectedData.title}
-                    className="w-full h-full object-cover"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.5 }}
-                  />
-                </AnimatePresence>
-                
-                <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
-                  {selectedData.images.map((_, index) => (
-                    <button
-                      key={index}
-                      onClick={() => setCurrentImageIndex(prev => ({ ...prev, [selectedExcursion]: index }))}
-                      className={`h-2 rounded-full transition-all ${
-                        index === currentImageIndex[selectedExcursion]
-                          ? 'w-8 bg-white'
-                          : 'w-2 bg-white/50 hover:bg-white'
-                      }`}
-                    />
-                  ))}
-                </div>
+            <X size={24} />
+          </button>
 
-                <button
-                  onClick={() => setSelectedExcursion(null)}
-                  className="absolute top-6 right-6 w-12 h-12 bg-black/50 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-black/70 transition"
-                >
-                  <X size={24} />
-                </button>
+          <div className="absolute top-6 left-6 w-16 h-16 bg-white/90 backdrop-blur-sm rounded-2xl flex items-center justify-center shadow-xl">
+            {selectedData.icon && <selectedData.icon className="w-8 h-8 text-violet-600" />}
+          </div>
+        </div>
 
-                <div className="absolute top-6 left-6 w-16 h-16 bg-white/90 backdrop-blur-sm rounded-2xl flex items-center justify-center shadow-xl">
-                  {selectedData.icon && <selectedData.icon className="w-8 h-8 text-violet-600" />}
-                </div>
-              </div>
+        <div className="p-6 md:p-8">
+          <div className="mb-6">
+            <h3 className="text-2xl md:text-3xl font-bold text-slate-800 mb-2">{selectedData.title}</h3>
+            <p className="text-slate-500 flex items-center gap-2 text-sm md:text-base">
+              <MapPinned size={18} />
+              {selectedData.route}
+            </p>
+          </div>
 
-              <div className="p-8">
-                <div className="mb-6">
-                  <h3 className="text-3xl font-bold text-slate-800 mb-2">{selectedData.title}</h3>
-                  <p className="text-slate-500 flex items-center gap-2">
-                    <MapPinned size={18} />
-                    {selectedData.route}
-                  </p>
-                </div>
+          <p className="text-slate-600 mb-6 leading-relaxed">{selectedData.description}</p>
 
-                <p className="text-lg text-slate-600 mb-8 leading-relaxed">{selectedData.description}</p>
+          <div className="grid md:grid-cols-2 gap-6 mb-6">
+            <div className="bg-slate-50 rounded-xl p-5">
+              <h4 className="font-semibold text-slate-800 mb-3 flex items-center gap-2">
+                <span className="w-1 h-5 bg-violet-500 rounded-full" />
+                {t.modal.program}
+              </h4>
+              <ul className="space-y-2">
+                {selectedData.highlights.map((item) => (
+                  <li key={item} className="flex items-center gap-2 text-slate-600 text-sm">
+                    <CheckCircle2 size={16} className="text-violet-500 flex-shrink-0" />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
 
-                <div className="grid md:grid-cols-2 gap-8 mb-8">
-                  <div className="bg-slate-50 rounded-xl p-6">
-                    <h4 className="font-semibold text-slate-800 mb-4 flex items-center gap-2">
-                      <span className="w-1 h-6 bg-violet-500 rounded-full" />
-                      {t.modal.program}
-                    </h4>
-                    <ul className="space-y-3">
-                      {selectedData.highlights.map((item) => (
-                        <li key={item} className="flex items-center gap-3 text-slate-600">
-                          <CheckCircle2 size={18} className="text-violet-500" />
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+            <div className="bg-slate-50 rounded-xl p-5">
+              <h4 className="font-semibold text-slate-800 mb-3 flex items-center gap-2">
+                <span className="w-1 h-5 bg-fuchsia-500 rounded-full" />
+                {t.modal.included}
+              </h4>
+              <ul className="space-y-2">
+                {selectedData.included.map((item) => (
+                  <li key={item} className="flex items-center gap-2 text-slate-600 text-sm">
+                    <CheckCircle2 size={16} className="text-fuchsia-500 flex-shrink-0" />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
 
-                  <div className="bg-slate-50 rounded-xl p-6">
-                    <h4 className="font-semibold text-slate-800 mb-4 flex items-center gap-2">
-                      <span className="w-1 h-6 bg-fuchsia-500 rounded-full" />
-                      {t.modal.included}
-                    </h4>
-                    <ul className="space-y-3">
-                      {selectedData.included.map((item) => (
-                        <li key={item} className="flex items-center gap-3 text-slate-600">
-                          <CheckCircle2 size={18} className="text-fuchsia-500" />
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
+          <div className="flex items-center justify-between p-4 bg-gradient-to-r from-violet-50 to-fuchsia-50 rounded-xl mb-6">
+            <div>
+              <p className="text-xs text-slate-500 flex items-center gap-1">
+                <Clock size={14} />
+                {t.modal.duration}
+              </p>
+              <p className="text-xl font-bold text-slate-800">{selectedData.duration}</p>
+            </div>
+            <div className="text-right">
+              <p className="text-xs text-slate-500 flex items-center gap-1 justify-end">
+                <CircleDollarSign size={14} />
+                {t.modal.price}
+              </p>
+              <p className="text-2xl font-bold bg-gradient-to-r from-violet-600 to-fuchsia-600 bg-clip-text text-transparent">
+                {selectedData.price}
+              </p>
+            </div>
+          </div>
 
-                <div className="flex items-center justify-between p-6 bg-gradient-to-r from-violet-50 to-fuchsia-50 rounded-xl mb-6">
-                  <div>
-                    <p className="text-sm text-slate-500 flex items-center gap-1">
-                      <Clock size={16} />
-                      {t.modal.duration}
-                    </p>
-                    <p className="text-2xl font-bold text-slate-800">{selectedData.duration}</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-sm text-slate-500 flex items-center gap-1">
-                      <CircleDollarSign size={16} />
-                      {t.modal.price}
-                    </p>
-                    <p className="text-3xl font-bold bg-gradient-to-r from-violet-600 to-fuchsia-600 bg-clip-text text-transparent">
-                      {selectedData.price}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex gap-4">
-                  <motion.button
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    className={`flex-1 py-4 bg-gradient-to-r ${selectedData.gradient} text-white rounded-xl font-semibold text-lg shadow-lg flex items-center justify-center gap-2`}
-                  >
-                    <CalendarCheck2 size={20} />
-                    <Link to='/bookings'>{t.modal.book}</Link>
-                  </motion.button>
-                  <motion.button
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    className="px-6 py-4 bg-slate-100 text-slate-700 rounded-xl font-semibold text-lg hover:bg-slate-200 transition"
-                  >
-                    <Phone size={20} />
-                  </motion.button>
-                </div>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          {/* Форма бронирования */}
+          <BookingForm 
+            selectedExcursion={selectedData}
+            lang={lang}
+            onSuccess={() => setSelectedExcursion(null)}
+          />
+        </div>
+      </motion.div>
+    </motion.div>
+  )}
+</AnimatePresence>
     </div>
   )
 }
