@@ -21,7 +21,6 @@ export default function BookingForm({ selectedExcursion, lang, onSuccess }: {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
 
-gt 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
@@ -45,7 +44,7 @@ gt
     }
 
     try {
-      const response = await fetch('https://your-api-endpoint.com/bookings', {
+      const response = await fetch('https://nazarov-travel.uz/api/bookings', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
